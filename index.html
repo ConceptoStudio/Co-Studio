@@ -166,12 +166,13 @@
         <div class="font-bold text-xl tracking-tighter uppercase">(Co)Studio MX</div>
         <div class="flex gap-12 text-xs uppercase tracking-[0.2em] font-medium">
             <a href="#projects" class="hover:opacity-50 transition-opacity">Work</a>
+            <a href="#page-team" class="hover:opacity-50 transition-opacity">People</a>
             <a href="#studio" class="hover:opacity-50 transition-opacity">Philosophy</a>
             <a href="#contact" class="hover:opacity-50 transition-opacity">Contact</a>
         </div>
     </nav>
 
-    <main class="content-overlay">
+    <main id="page-home" class="page-view content-overlay">
         
         <!-- HERO -->
         <section id="hero" class="h-screen flex flex-col justify-center items-center px-6 text-center">
@@ -276,9 +277,15 @@
                     <p>
                         (Co)Studio MX no es solo un nombre, es una metodología. Colaboramos como una extensión creativa de las marcas, eliminando la jerarquía tradicional para encontrar la esencia de cada proyecto.
                     </p>
-                    <p>
-                        Basados en Guadalajara y operando globalmente, mezclamos el rigor del diseño editorial clásico con la experimentación digital de vanguardia.
-                    </p>
+                    <div>
+                        <p>
+                            Basados en Guadalajara y operando globalmente, mezclamos el rigor del diseño editorial clásico con la experimentación digital de vanguardia.
+                        </p>
+
+                        <div class="mt-8">
+                            <a href="#page-team" class="text-xs uppercase tracking-widest text-gray-500 hover:text-black transition-colors">Conoce al equipo</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -299,6 +306,67 @@
             </div>
         </footer>
 
+    </main>
+
+    <main id="page-team" class="page-view content-overlay">
+        <section class="min-h-screen pt-48 pb-20 px-6 md:px-24">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-32 reveal">
+                    <span class="text-[10px] uppercase tracking-[0.5em] text-gray-500 mb-8 block">02 / People</span>
+                    <h1 class="text-6xl md:text-9xl font-black tracking-tighter leading-none uppercase">The<br>Team.</h1>
+                </div>
+
+                <!-- Cuadrícula de Miembros -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-12">
+                    <div class="team-grid-item reveal">
+                        <div class="flex justify-between items-baseline mb-6">
+                            <h3 class="text-3xl font-bold tracking-tighter uppercase">Rodrigo C.</h3>
+                            <span class="text-[10px] uppercase tracking-widest text-gray-500">Founder / Creative Director</span>
+                        </div>
+                        <p class="text-gray-400 leading-relaxed max-w-sm">Estratega visual con más de una década definiendo el lenguaje de marcas premium en Latinoamérica.</p>
+                    </div>
+
+                    <div class="team-grid-item reveal" style="transition-delay: 100ms;">
+                        <div class="flex justify-between items-baseline mb-6">
+                            <h3 class="text-3xl font-bold tracking-tighter uppercase">Ana Paula M.</h3>
+                            <span class="text-[10px] uppercase tracking-widest text-gray-500">Lead Design Strategist</span>
+                        </div>
+                        <p class="text-gray-400 leading-relaxed max-w-sm">Especialista en narrativa y arquitectura de marca, conectando puntos entre negocio y estética.</p>
+                    </div>
+
+                    <div class="team-grid-item reveal" style="transition-delay: 200ms;">
+                        <div class="flex justify-between items-baseline mb-6">
+                            <h3 class="text-3xl font-bold tracking-tighter uppercase">Julian V.</h3>
+                            <span class="text-[10px] uppercase tracking-widest text-gray-500">Creative Technologist</span>
+                        </div>
+                        <p class="text-gray-400 leading-relaxed max-w-sm">Ingeniero de front-end enfocado en experiencias inmersivas, WebGL y diseño generativo.</p>
+                    </div>
+
+                    <div class="team-grid-item reveal" style="transition-delay: 300ms;">
+                        <div class="flex justify-between items-baseline mb-6">
+                            <h3 class="text-3xl font-bold tracking-tighter uppercase">Sofía L.</h3>
+                            <span class="text-[10px] uppercase tracking-widest text-gray-500">Project Manager</span>
+                        </div>
+                        <p class="text-gray-400 leading-relaxed max-w-sm">La fuerza operativa detrás de la co-creación, asegurando que cada visión se materialice.</p>
+                    </div>
+                </div>
+
+                <!-- Filosofía de Colaboración -->
+                <div class="mt-48 grid grid-cols-1 md:grid-cols-2 gap-20 items-center reveal">
+                    <div class="aspect-square bg-[#111] flex items-center justify-center overflow-hidden">
+                         <div class="w-2/3 h-2/3 border border-white/10 p-8 flex items-center justify-center">
+                            <span class="text-[10px] uppercase tracking-[1em] text-white/20 rotate-90">COLABORACIÓN</span>
+                         </div>
+                    </div>
+                    <div>
+                        <h2 class="text-4xl font-bold tracking-tighter mb-8 italic">"No creemos en el genio solitario, sino en el sistema colaborativo."</h2>
+                        <p class="text-lg text-gray-500 leading-relaxed">
+                            (Co)Studio opera bajo un modelo de red. Para cada proyecto, ensamblamos un equipo de especialistas —fotógrafos, redactores, arquitectos— que comparten nuestro rigor visual y ambición técnica.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <script>
@@ -397,6 +465,34 @@
                 });
             }, { threshold: 0.1 });
             document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            // --- SPA navigation: show/hide main pages and handle history ---
+            const pages = document.querySelectorAll('main.page-view');
+            function showPage(id, push = true) {
+                pages.forEach(p => {
+                    p.style.display = (p.id === id) ? 'block' : 'none';
+                });
+                if (push) history.pushState({ page: id }, '', '#' + id);
+                window.scrollTo(0, 0);
+            }
+
+            document.querySelectorAll('nav a[href^="#"]').forEach(a => {
+                a.addEventListener('click', (e) => {
+                    const targetId = a.getAttribute('href').replace('#', '');
+                    if (document.getElementById(targetId)) {
+                        e.preventDefault();
+                        showPage(targetId);
+                    }
+                });
+            });
+
+            window.addEventListener('popstate', () => {
+                const id = location.hash ? location.hash.replace('#', '') : 'page-home';
+                if (document.getElementById(id)) showPage(id, false);
+            });
+
+            // Initial page based on hash
+            const initialId = location.hash ? location.hash.replace('#', '') : 'page-home';
+            if (document.getElementById(initialId)) showPage(initialId, false);
         };
 
     </script>
