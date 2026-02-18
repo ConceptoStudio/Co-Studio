@@ -91,23 +91,34 @@
             opacity: 1;
         }
 
-        /* Floating Gallery Section */
+        /* Projects Section */
         #projects {
             position: relative;
-            height: 160vh;
+            padding: 8rem 1.5rem;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-
+        
         .gallery-container {
-            position: absolute;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 4rem;
-            width: 120%;
-            will-change: transform;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 1024px) {
+            .gallery-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .gallery-container {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
         }
 
         .project-card {
@@ -134,13 +145,21 @@
 
         .project-info {
             position: absolute;
-            bottom: 2rem;
-            left: 2rem;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            left: auto;
             z-index: 20;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(8px);
             transition: all 0.4s ease;
+            text-align: right;
         }
+        
+        .project-info.dark-text h3,
+        .project-info.dark-text p { color: #000; }
+        
+        .project-info.light-text h3 { color: #fff; }
+        .project-info.light-text p { color: rgba(255,255,255,0.5); }
 
         .project-card:hover .project-info {
             opacity: 1;
@@ -253,14 +272,14 @@
 
         <!-- INTERACTIVE GALLERY SECTION -->
         <section id="projects" class="py-20">
-            <div class="absolute top-20 left-12 reveal">
+            <div class="mb-12 reveal">
                 <h2 class="text-xs uppercase tracking-[0.3em] text-gray-500">Selected Projects / 24—26</h2>
             </div>
 
             <div class="gallery-container" id="gallery">
                 <!-- Project 1: Gēsto -->
                 <a href="https://gesto.mx/" class="project-card bg-gesto reveal group" data-speed="2">
-                    <div class="project-info">
+                    <div class="project-info dark-text">
                         <h3 class="text-4xl font-black text-black tracking-tighter">GĒSTO®</h3>
                         <p class="text-[10px] text-black/60 uppercase font-bold">Brand Identity / 2026</p>
                     </div>
@@ -274,7 +293,7 @@
 
                 <!-- Project 2: TRUTH -->
                 <a href="https://www.instagram.com/truthtreatmentmx/" class="project-card bg-zinc-800 reveal group" data-speed="-2" style="transition-delay: 150ms;">
-                    <div class="project-info">
+                    <div class="project-info light-text">
                         <h3 class="text-4xl font-black text-white tracking-tighter">TRUTH</h3>
                         <p class="text-[10px] text-white/40 uppercase font-bold">SKIN-CARE / 2026</p>
                     </div>
@@ -287,7 +306,7 @@
 
                 <!-- Project 3: Columna -->
                 <a href="https://columnarealestate.com/" class="project-card bg-columna reveal group" data-speed="1.5" style="transition-delay: 200ms;">
-                    <div class="project-info">
+                    <div class="project-info dark-text">
                         <h3 class="text-4xl font-black text-black tracking-tighter">COLUMNA</h3>
                         <p class="text-[10px] text-black/60 uppercase font-bold">OOH Campaign / 2024</p>
                     </div>
@@ -298,7 +317,7 @@
 
                 <!-- Project 4: SeaHouse -->
                 <a href="https://www.instagram.com/concepto.co/p/DFWWLkyuT5a/" class="project-card bg-seahouse reveal group" data-speed="-1" style="transition-delay: 100ms;">
-                    <div class="project-info">
+                    <div class="project-info light-text">
                         <h3 class="text-4xl font-black text-white tracking-tighter">SEAHOUSE</h3>
                         <p class="text-[10px] text-white/40 uppercase font-bold">Editorial Design / 2025</p>
                     </div>
@@ -313,7 +332,7 @@
 
                 <!-- Project 5: Monte Cabo -->
                 <a href="https://montecabo.mx/es/" class="project-card bg-white reveal group" data-speed="3" style="transition-delay: 250ms;">
-                    <div class="project-info">
+                    <div class="project-info dark-text">
                         <h3 class="text-4xl font-black text-black tracking-tighter">MONTE CABO</h3>
                         <p class="text-[10px] text-black/40 uppercase font-bold">Real Estate / 2025</p>
                     </div>
@@ -325,7 +344,7 @@
 
                 <!-- Project 6: Lizza -->
                 <a href="https://lizza.link/creator" class="project-card bg-[#FF3B30] reveal group" data-speed="1" style="transition-delay: 300ms;">
-                    <div class="project-info">
+                    <div class="project-info light-text">
                         <h3 class="text-4xl font-black text-white tracking-tighter">LIZZA App</h3>
                         <p class="text-[10px] text-white/60 uppercase font-bold">UI/UX Design / 2026</p>
                     </div>
@@ -528,14 +547,16 @@
         });
 
         function updateGallery() {
-            if (document.getElementById('page-home').classList.contains('active')) {
+            if (
+                window.innerWidth > 768 &&
+                document.getElementById('page-home').classList.contains('active')
+            ) {
                 currentX += (targetX - currentX) * 0.05;
                 currentY += (targetY - currentY) * 0.05;
-                gallery.style.transform = `translate(${currentX * -50}px, ${currentY * -30}px)`;
                 cards.forEach(card => {
-                    const speed = parseFloat(card.getAttribute('data-speed'));
-                    const x = currentX * (speed * 20);
-                    const y = currentY * (speed * 15);
+                    const speed = parseFloat(card.getAttribute('data-speed') || 0);
+                    const x = currentX * (speed * 10);
+                    const y = currentY * (speed * 8);
                     card.style.transform = `translate(${x}px, ${y}px)`;
                 });
             }
